@@ -17,8 +17,9 @@ Convertible to:
 # how to run:
 ```
 git clone https://github.com/volegnar/ccheck.git
-
-
+cd ccheck
+chmod +x ccheck
+./ccheck btc
 
 ```
 
