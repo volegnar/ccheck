@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+
+import click
+import requests
+import random
+
+cryptos = {
+        'bitcoin': 'bitcoin',
+        'btc': 'bitcoin',
+        'xmr': 'monero',
+        'monero': 'monero',
+        'ltc': 'litecoin',
+        'litecoin': 'litecoin',
+        'solana': 'solana',
+        'sol': 'solana',
+        'eth': 'ethereum',
+        'etherium': 'etherium',
+        'doge': 'dogecoin',
+        'dogecoin': 'dogecoin',
+        'cardano': 'cardano',
+        'ada': 'cardano'
+    }
+    
+colors = [
+    "green",
+    "yellow",
+    "blue",
+    "magenta",
+    "cyan"
+]
+
+def get_crypto_price(crypto_id):
+    url = (
+        'https://api.coingecko.com/api/v3/simple/price'
+        f'?ids={crypto_id}&vs_currencies=usd,eur'
+    )
+    r = requests.get(url, timeout=10)
+    r.raise_for_status()
+    data = r.json()
+    return data[crypto_id]['usd'], data[crypto_id]['eur']
+
+@click.command()
+@click.argument('currency')
+def check(currency):
+    currency = currency.lower()
+
+    if currency not in cryptos:
+        click.echo(click.style("Unsupported currency.", fg="red"))
+        click.echo("Available currencies:")
+        for c in sorted(set(cryptos.keys())):
+            click.echo(f"  - {c}")
+        return
+
+    try:
+        usd, eur = get_crypto_price(cryptos[currency])
+        color = random.choice(colors)
+
+        click.echo(click.style(f"{currency.upper()} price: ${usd}, €{eur}", fg=color, bold=True))
+
+    except Exception as e:
+        click.echo(click.style(f"Error: {e}", fg="red"))
+
+if __name__ == '__main__':
+    check()
+
