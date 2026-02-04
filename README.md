@@ -14,6 +14,10 @@ Convertible to:
 - EUR
 - USD
 
+# how to run:
+git clone https://github.com/volegnar/ccheck.git
+
+
 ![alt text](https://github.com/volegnar/ccheck/blob/main/screenshot.png?raw=true "example")
 
 *prices will appear in random colors*
